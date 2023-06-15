@@ -1,0 +1,31 @@
+Queries used for Tableau Project
+
+1. Table 1 - Global Numbers
+SELECT SUM(new_cases) AS total_cases, SUM(CAST(new_deaths AS INT)) AS total_deaths, 
+	(SUM(cast(new_deaths AS INT))/SUM(new_cases))*100 AS DeathPercentage --, total_deaths, (total_deaths/total_cases)*100 AS DeathPercentage
+FROM PortfolioProject..CovidDeaths
+WHERE continent IS NOT NULL
+ORDER BY 1,2
+
+2. Table 2 - total Deaths Per Continent
+SELECT location, SUM(CAST(new_deaths AS INT)) AS TotalDeathCount
+FROM PortfolioProject..CovidDeaths
+WHERE continent IS NULL AND
+	location NOT IN ('World', 'European Union', 'International')
+GROUP BY location
+ORDER BY TotalDeathCount DESC
+
+
+3. Table 3 - Percent Population Infected Per Country
+SELECT Location, Population, MAX(total_cases) AS HighestInfectionCoun, MAX((total_cases/population)*100) AS PercentPopulationInfected
+FROM PortfolioProject..CovidDeaths
+--WHERE location LIKE 'Canada'
+GROUP BY Location, Population
+ORDER BY PercentPopulationInfected DESC
+
+
+4. Table 4 - Percent Population Infected
+SELECT Location, Population, MAX(total_cases) AS HighestInfectionCoun, MAX((total_cases/population)*100) AS PercentPopulationInfected
+FROM PortfolioProject..CovidDeaths
+GROUP BY Location, Population
+ORDER BY PercentPopulationInfected DESC
